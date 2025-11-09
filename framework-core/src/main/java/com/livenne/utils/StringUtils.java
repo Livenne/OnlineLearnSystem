@@ -26,9 +26,18 @@ public class StringUtils{
         try {
             return mapper.readValue(json, typeReference);
         } catch (Exception e) {
+            if (e instanceof JsonParseException) {
+                try {
+                    String wrappedJson = "\"" + json + "\"";
+                    return mapper.readValue(wrappedJson, typeReference);
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                    return null;
+                }
+            }
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public static <T> T formJson(String json,Class<T> clazz) {

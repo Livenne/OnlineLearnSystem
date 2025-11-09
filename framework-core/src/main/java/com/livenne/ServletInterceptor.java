@@ -49,7 +49,6 @@ public class ServletInterceptor {
             argList.add(obj);
         }
         Object ret = method.invoke(instance, argList.toArray());
-        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         if (ret == null) return;
         String result = StringUtils.toJson(ret);

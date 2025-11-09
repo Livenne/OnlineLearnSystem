@@ -21,11 +21,17 @@ public class ImageController{
         if (!imageService.has(imageName)) return;
         File image = imageService.get(imageName);
         response.setContentType(imageService.getContentType(imageName));
-        try (FileInputStream fis = new FileInputStream(image)){
+        try (FileInputStream fis = new FileInputStream(image)) {
+            response.setContentLength((int) image.length());
             OutputStream out = response.getOutputStream();
-            out.write(fis.readAllBytes());
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            out.flush();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to stream image data", e);
         }
     }
 }

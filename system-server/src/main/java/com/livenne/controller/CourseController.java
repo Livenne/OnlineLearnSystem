@@ -29,6 +29,7 @@ public class CourseController extends HttpServlet {
 
     @GetMapping("/list")
     public ResponseEntity<?> getCourseList(){
+        System.out.println("test");
         return ResponseEntity.success(courseService.getList());
     }
 

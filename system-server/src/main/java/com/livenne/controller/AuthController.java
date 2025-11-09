@@ -10,6 +10,7 @@ import com.livenne.common.model.dto.UserRegisterDTO;
 import com.livenne.utils.JwtUtils;
 import com.livenne.service.UserService;
 import com.livenne.service.impl.UserServiceImpl;
+import com.livenne.utils.StringUtils;
 
 import java.util.regex.Pattern;
 
@@ -21,6 +22,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO) {
+        System.out.println(StringUtils.toJson(userLoginDTO));
         if (userLoginDTO == null) return ResponseEntity.failureMsg("");
         String username = userLoginDTO.getUsername();
         String password = userLoginDTO.getPassword();

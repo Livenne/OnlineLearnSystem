@@ -1,5 +1,6 @@
 package com.livenne.common.interceptorr;
 
+import com.livenne.utils.JwtUtils;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,10 +15,8 @@ public class RouterFilter implements Filter {
 
     private final Set<String> whitelist = new HashSet<>() {
         {
-//            add("/user/login");
-//            add("/user/register");
-//            add("/user/verify");
-//            add("/image");
+            add("/auth");
+            add("/image");
         }
     };
 
@@ -30,27 +29,35 @@ public class RouterFilter implements Filter {
         res.setCharacterEncoding("UTF-8");
 
         String path = req.getRequestURI();
-//        if (req.getMethod().equals("OPTIONS")) {
-//            chain.doFilter(request, response);
-//            return;
-//        }
+        if (req.getMethod().equals("OPTIONS")) {
+            System.out.println("OPTIONS");
+            chain.doFilter(request, response);
+            return;
+        }
 
-        System.out.println("path:"+path);
+        System.out.println(req.getMethod() + " " + path);
 
-//        for (String s : whitelist) {
-//            if (path.startsWith(s)) {
-//                chain.doFilter(request, response);
-//                return;
-//            }
-//        }
-//        String token = req.getHeader("Authorization");
-//        if (token == null) return;
-//        if (!token.startsWith("Bearer ")) return;
-//        token = token.substring("Bearer ".length());
-//
-//        if (!JwtUtils.validateToken(token)) return;
-//        Long userId = Long.valueOf(JwtUtils.getDecoded(token).getIssuer());
-//        req.setAttribute("userId", userId);
+        for (String s : whitelist) {
+            if (req.getServletPath().startsWith(s)) {
+                System.out.println("WHITELIST");
+                chain.doFilter(request, response);
+                return;
+            }
+        }
+        String token = req.getHeader("Authorization");
+        if (token == null) {
+            return;
+        }
+        if (!token.startsWith("Bearer ")) {
+            return;
+        }
+        token = token.substring("Bearer ".length());
+
+        if (!JwtUtils.validateToken(token)) {
+            return;
+        }
+        Long userId = Long.valueOf(JwtUtils.getDecoded(token).getIssuer());
+        req.setAttribute("userId", userId);
         chain.doFilter(request, response);
     }
 }
