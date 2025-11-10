@@ -1,4 +1,4 @@
-package com.livenne.common.interceptorr;
+package com.livenne.common.interceptor;
 
 import com.livenne.utils.JwtUtils;
 import jakarta.servlet.*;
@@ -56,6 +56,7 @@ public class RouterFilter implements Filter {
         if (!JwtUtils.validateToken(token)) {
             return;
         }
+        System.out.println("Access");
         Long userId = Long.valueOf(JwtUtils.getDecoded(token).getIssuer());
         req.setAttribute("userId", userId);
         chain.doFilter(request, response);
