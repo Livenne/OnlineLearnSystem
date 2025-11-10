@@ -23,8 +23,14 @@ public class UserFavoriteServiceImpl implements UserFavoriteService {
     }
 
     @Override
-    public void delete(Long favoriteId) {
-        userFavoriteRepository.delete(favoriteId);
+    public void delete(Long userId, Long courseId) {
+        userFavoriteRepository.delete(userId,courseId);
+    }
+
+
+    @Override
+    public Boolean isFavorite(Long userId, Long courseId) {
+        return userFavoriteRepository.isFavorite(userId,courseId);
     }
 
     @Override

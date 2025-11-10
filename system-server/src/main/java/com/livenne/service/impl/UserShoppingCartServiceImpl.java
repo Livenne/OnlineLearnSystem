@@ -18,8 +18,8 @@ public class UserShoppingCartServiceImpl implements UserShoppingCartService {
     }
 
     @Override
-    public void delete(Long id) {
-        userShoppingCartRepository.delete(id);
+    public void delete(Long userId,Long courseId) {
+        userShoppingCartRepository.delete(userId,courseId);
     }
 
     @Override

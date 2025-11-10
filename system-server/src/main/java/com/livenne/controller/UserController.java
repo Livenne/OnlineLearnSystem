@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class UserController {
 
     public UserService userService = UserServiceImpl.instance;
+    public CourseService courseService = CourseServiceImpl.instance;
     public QuestionService questionService = QuestionServiceImpl.instance;
     public UserCourseService userCourseService = UserCourseServiceImpl.instance;
     public UserFavoriteService userFavoriteService = UserFavoriteServiceImpl.instance;
@@ -19,6 +20,8 @@ public class UserController {
     public UserShoppingCartService userShoppingCartService = UserShoppingCartServiceImpl.instance;
     public QuestionLikeService questionLikeService = QuestionLikeServiceImpl.instance;
     public CourseLikeService courseLikeService = CourseLikeServiceImpl.instance;
+    public CourseCommentService courseCommentService = CourseCommentServiceImpl.instance;
+    public QuestionCommentService questionCommentService = QuestionCommentServiceImpl.instance;
 
     @Autowired
     public HttpServletRequest request;
@@ -38,21 +41,46 @@ public class UserController {
 
     @GetMapping("/course/like")
     public ResponseEntity<?> courseLike(@RequestParm("courseId") Long courseId){
+        Long userId = (Long) request.getAttribute("userId");
+        if (courseId == null) return ResponseEntity.failureMsg("");
+        Course course = courseService.get(courseId);
+        if (courseLikeService.isLike(userId, courseId)) {
+            courseLikeService.delete(userId, courseId);
+            course.setLikes(course.getLikes() - 1);
+            courseService.update(course);
+        }else {
+            courseLikeService.add(new CourseLike(null, userId, courseId));
+            course.setLikes(course.getLikes() + 1);
+            courseService.update(course);
+        }
         return ResponseEntity.success(null);
     }
     @GetMapping("/course/favorite")
     public ResponseEntity<?> courseFavorite(@RequestParm("courseId") Long courseId){
-
+        Long userId = (Long) request.getAttribute("userId");
+        if (courseId == null) return ResponseEntity.failureMsg("");
+        Course course = courseService.get(courseId);
+        if (userFavoriteService.isFavorite(userId, courseId)) {
+            userFavoriteService.delete(userId, courseId);
+            course.setFavorites(course.getLikes() - 1);
+            courseService.update(course);
+        }else {
+            userFavoriteService.add(new UserFavorite(null, userId, courseId));
+            course.setLikes(course.getLikes() + 1);
+            courseService.update(course);
+        }
         return ResponseEntity.success(null);
     }
     @GetMapping("/shoppingcart/join")
     public ResponseEntity<?> shoppingCartJoin(@RequestParm("courseId") Long courseId){
-
+        Long userId = (Long) request.getAttribute("userId");
+        userShoppingCartService.add(new UserShoppingCart(null,userId,courseId));
         return ResponseEntity.success(null);
     }
     @GetMapping("/shoppingcart/leave")
     public ResponseEntity<?> shoppingCartLeave(@RequestParm("courseId") Long courseId){
-
+        Long userId = (Long) request.getAttribute("userId");
+        userShoppingCartService.delete(userId,courseId);
         return ResponseEntity.success(null);
     }
     @GetMapping("/shoppingcart/list")
@@ -71,8 +99,12 @@ public class UserController {
         return ResponseEntity.success(userOrderService.getListByUserId(userId));
     }
     @PostMapping("/course/comment")
-    public ResponseEntity<?> courseComment(@RequestBody CourseComment courseComment,@RequestParm("courseId") Long courseId){
-
+    public ResponseEntity<?> courseComment(@RequestBody CourseComment courseComment){
+        Long userId = (Long) request.getAttribute("userId");
+        courseComment.setCommentId(null);
+        courseComment.setUserId(userId);
+        courseComment.setCreateTime(System.currentTimeMillis());
+        courseCommentService.add(courseComment);
         return ResponseEntity.success(null);
     }
     @GetMapping("/question/list")
@@ -82,12 +114,27 @@ public class UserController {
     }
     @GetMapping("/question/like")
     public ResponseEntity<?> questionLike(@RequestParm("questionId") Long questionId){
-
+        Long userId = (Long) request.getAttribute("userId");
+        if (questionId == null) return ResponseEntity.failureMsg("");
+        Question question = questionService.get(questionId);
+        if (questionLikeService.isLike(userId, questionId)) {
+            questionLikeService.delete(userId, questionId);
+            question.setLikes(question.getLikes() - 1);
+            questionService.update(question);
+        }else {
+            questionLikeService.add(new QuestionLike(null, userId, questionId));
+            question.setLikes(question.getLikes() + 1);
+            questionService.update(question);
+        }
         return ResponseEntity.success(null);
     }
     @PostMapping("/question/comment")
-    public ResponseEntity<?> questionComment(@RequestBody QuestionComment questionComment,@RequestParm("questionId") Long questionId){
-
+    public ResponseEntity<?> questionComment(@RequestBody QuestionComment questionComment){
+        Long userId = (Long) request.getAttribute("userId");
+        questionComment.setCommentId(null);
+        questionComment.setUserId(userId);
+        questionComment.setCreateTime(System.currentTimeMillis());
+        questionCommentService.add(questionComment);
         return ResponseEntity.success(null);
     }
 }

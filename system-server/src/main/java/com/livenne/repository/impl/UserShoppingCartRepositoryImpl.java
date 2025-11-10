@@ -1,5 +1,6 @@
 package com.livenne.repository.impl;
 
+import com.livenne.common.model.UserFavorite;
 import com.livenne.common.model.UserShoppingCart;
 import com.livenne.repository.UserShoppingCartRepository;
 
@@ -22,9 +23,12 @@ public class UserShoppingCartRepositoryImpl extends BaseRepository implements Us
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(Long userId,Long courseId) {
         entityManager.getTransaction().begin();
-        entityManager.remove(findById(id));
+        entityManager.remove(entityManager.createQuery("from UserShoppingCart where userId=:userId and courseId=:courseId", UserShoppingCart.class)
+                .setParameter("userId", userId)
+                .setParameter("courseId", courseId)
+                .getSingleResult());
         entityManager.getTransaction().commit();
     }
 

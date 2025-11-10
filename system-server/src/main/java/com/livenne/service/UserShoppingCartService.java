@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserShoppingCartService {
     UserShoppingCart add(UserShoppingCart userShoppingCart);
-    void delete(Long id);
+    void delete(Long userId,Long courseId);
     void update(UserShoppingCart userShoppingCart);
     UserShoppingCart get(Long id);
     List<UserShoppingCart> getListByUserId(Long userId);

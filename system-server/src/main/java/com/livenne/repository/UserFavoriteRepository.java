@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface UserFavoriteRepository {
     UserFavorite save(UserFavorite userFavorite);
-    void delete(Long favoriteId);
+    void delete(Long userId, Long courseId);
     void update(UserFavorite userFavorite);
+    Boolean isFavorite(Long userId, Long courseId);
     UserFavorite findById(Long favoriteId);
     List<UserFavorite> findAll(Long userId);
 }

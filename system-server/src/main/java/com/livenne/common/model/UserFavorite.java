@@ -8,12 +8,12 @@ public class UserFavorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long favoriteId;
-    private String courseId;
+    private Long courseId;
     private Long userId;
 
     public UserFavorite() {}
 
-    public UserFavorite(Long favoriteId, String courseId, Long userId) {
+    public UserFavorite(Long favoriteId, Long courseId, Long userId) {
         this.favoriteId = favoriteId;
         this.courseId = courseId;
         this.userId = userId;
@@ -27,11 +27,11 @@ public class UserFavorite {
         this.favoriteId = favoriteId;
     }
 
-    public String getCourseId() {
+    public Long getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(String courseId) {
+    public void setCourseId(Long courseId) {
         this.courseId = courseId;
     }
 
