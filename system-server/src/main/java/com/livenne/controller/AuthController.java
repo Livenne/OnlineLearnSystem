@@ -12,6 +12,7 @@ import com.livenne.service.UserService;
 import com.livenne.service.impl.UserServiceImpl;
 import com.livenne.utils.StringUtils;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Controller("/auth")
@@ -54,4 +55,8 @@ public class AuthController {
         return ResponseEntity.success(token);
     }
 
+    @PostMapping("/verify")
+    public ResponseEntity<?> verify(@RequestBody Map<String, String> map) {
+        return ResponseEntity.success(JwtUtils.validateToken(map.get("token")));
+    }
 }

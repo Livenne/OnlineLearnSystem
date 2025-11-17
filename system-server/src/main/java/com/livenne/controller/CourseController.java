@@ -2,14 +2,13 @@ package com.livenne.controller;
 
 import com.livenne.ResponseEntity;
 import com.livenne.annotation.*;
-import com.livenne.common.model.Course;
-import com.livenne.common.model.CourseComment;
-import com.livenne.common.model.CourseLike;
-import com.livenne.common.model.UserFavorite;
+import com.livenne.common.model.*;
 import com.livenne.service.*;
 import com.livenne.service.impl.*;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Objects;
 
 @Controller("/course")
 public class CourseController extends HttpServlet {
@@ -19,6 +18,10 @@ public class CourseController extends HttpServlet {
     public CourseCommentService courseCommentService = CourseCommentServiceImpl.instance;
     public CourseLikeService courseLikeService = CourseLikeServiceImpl.instance;
     public UserFavoriteService userFavoriteService = UserFavoriteServiceImpl.instance;
+    public UserService userService = UserServiceImpl.instance;
+    public UserCourseService userCourseService = UserCourseServiceImpl.instance;
+    public UserOrderService userOrderService = UserOrderServiceImpl.instance;
+    public UserShoppingCartService userShoppingCartService = UserShoppingCartServiceImpl.instance;
 
     @Autowired
     public HttpServletRequest request;
@@ -91,6 +94,18 @@ public class CourseController extends HttpServlet {
 
     @GetMapping("/store")
     public ResponseEntity<?> store(@RequestParm("courseId") Long courseId){
+        Long userId = (Long) request.getAttribute("userId");
+        User user = userService.get(userId);
+        if  (courseId == null) return ResponseEntity.failureMsg("");
+        Course course = courseService.get(courseId);
+        if (user.getScore() < course.getPrice()){
+            return ResponseEntity.failureMsg("");
+        }
+        userShoppingCartService.delete(userId, courseId);
+        userCourseService.add(new UserCourse(null, userId, courseId));
+        userOrderService.add(new UserOrder(null, userId, courseId));
+        user.setScore(user.getScore() - course.getPrice());
+        userService.update(user);
 
         return ResponseEntity.success(null);
     }

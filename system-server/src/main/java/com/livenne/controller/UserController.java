@@ -50,6 +50,11 @@ public class UserController {
         Long userId = (Long) request.getAttribute("userId");
         return ResponseEntity.success(userFavoriteService.isFavorite(userId,courseId));
     }
+    @GetMapping("/course/favorite/list")
+    public ResponseEntity<?> getCourseFavoriteList(){
+        Long userId = (Long) request.getAttribute("userId");
+        return ResponseEntity.success(userFavoriteService.getListByUserId(userId));
+    }
 
     @GetMapping("/shoppingcart/join")
     public ResponseEntity<?> shoppingCartJoin(@RequestParm("courseId") Long courseId){
@@ -83,6 +88,15 @@ public class UserController {
     public ResponseEntity<?> isQuestionLike(@RequestParm("questionId") Long questionId){
         Long userId = (Long) request.getAttribute("userId");
         return ResponseEntity.success(questionLikeService.isLike(userId,questionId));
+    }
+
+    @GetMapping("/checkin")
+    public ResponseEntity<?> checkin(){
+//        if (today){
+//            return ResponseEntity.failureMsg("");
+//        }
+
+        return ResponseEntity.success(null);
     }
 
 }
