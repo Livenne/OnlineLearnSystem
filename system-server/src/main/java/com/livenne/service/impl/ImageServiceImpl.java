@@ -1,17 +1,17 @@
 package com.livenne.service.impl;
 
+import com.livenne.annotation.Service;
+import com.livenne.common.constant.FileConstant;
 import com.livenne.service.ImageService;
 
 import java.io.File;
 
+@Service
 public class ImageServiceImpl implements ImageService {
-
-    public static ImageService instance = new ImageServiceImpl();
-    final protected String baseUrl = "E:\\Code\\Java\\OnlineLearnSystem\\system-server\\src\\main\\resources\\image\\";
 
     @Override
     public File get(String imageName) {
-        return new File(baseUrl+imageName);
+        return new File(FileConstant.IMAGE_PATH +imageName);
     }
 
     @Override

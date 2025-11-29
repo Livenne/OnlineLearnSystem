@@ -1,31 +1,17 @@
 package com.livenne;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
 public class ResponseEntity<T> {
     private Integer status;
     private String message;
     private T data;
-
-    public static <T> ResponseEntity<T> success(T data) {
-        return new ResponseEntity<T>(ResponseStatus.SUCCESS,null,data);
-    }
-    public static <T> ResponseEntity<T> successMsg(String message) {
-        return new ResponseEntity<T>(ResponseStatus.SUCCESS,message,null);
-    }
-    public static <T> ResponseEntity<T> success(T data, String message) {
-        return new ResponseEntity<T>(ResponseStatus.SUCCESS,message,data);
-    }
-
-    public static <T> ResponseEntity<T> failure(T data) {
-        return new ResponseEntity<T>(ResponseStatus.FAILURE,null,data);
-    }
-    public static <T> ResponseEntity<T> failureMsg(String message) {
-        return new ResponseEntity<T>(ResponseStatus.FAILURE,message,null);
-    }
-    public static <T> ResponseEntity<T> failure(T data, String message) {
-        return new ResponseEntity<T>(ResponseStatus.FAILURE,message,data);
-    }
-
-    public ResponseEntity(){}
 
     public ResponseEntity(Integer status, String message, T data) {
         this.status = status;
@@ -33,27 +19,35 @@ public class ResponseEntity<T> {
         this.data = data;
     }
 
-    public Integer getStatus() {
-        return status;
+    public static <T> ResponseEntity<T> success() {
+        return new ResponseEntity<>(ResponseStatus.SUCCESS, null, null);
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public static <T> ResponseEntity<T> success(T data) {
+        return new ResponseEntity<>(ResponseStatus.SUCCESS, null, data);
     }
 
-    public String getMessage() {
-        return message;
+    public static <T> ResponseEntity<T> successMsg(String message) {
+        return new ResponseEntity<>(ResponseStatus.SUCCESS, message, null);
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public static <T> ResponseEntity<T> success(T data, String message) {
+        return new ResponseEntity<>(ResponseStatus.SUCCESS, message, data);
     }
 
-    public T getData() {
-        return data;
+    public static <T> ResponseEntity<T> failure() {
+        return new ResponseEntity<>(ResponseStatus.FAILURE, null, null);
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public static <T> ResponseEntity<T> failure(T data) {
+        return new ResponseEntity<>(ResponseStatus.FAILURE, null, data);
+    }
+
+    public static <T> ResponseEntity<T> failureMsg(String message) {
+        return new ResponseEntity<>(ResponseStatus.FAILURE, message, null);
+    }
+
+    public static <T> ResponseEntity<T> failure(T data, String message) {
+        return new ResponseEntity<>(ResponseStatus.FAILURE, message, data);
     }
 }

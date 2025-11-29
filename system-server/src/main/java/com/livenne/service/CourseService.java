@@ -1,15 +1,16 @@
 package com.livenne.service;
 
 import com.livenne.common.model.Course;
+import com.livenne.common.model.CourseItem;
 
 import java.util.List;
 
 public interface CourseService {
-    Course add(Course course);
-    void update(Course course);
-    void delete(Long courseId);
-    Course get(Long courseId);
-    Course getByCourseName(String courseName);
-    List<Course> getList();
+    Course getById(Long id);
+    Course getByName(String name);
+    List<Course> getAll();
+    List<Course> getByIdList(List<Long> idList);
+    List<Course> getByNameList(List<String> nameList);
 
+    List<Course> getByUserId(Long userId);
 }
