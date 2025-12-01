@@ -169,7 +169,7 @@ public class StringUtils{
         if (type.equals(long.class)) return Long.parseLong(str);
         if (type.equals(Character.class)) return str.charAt(0);
         if (type.equals(char.class)) return str.charAt(0);
-        return str;
+        return formJson(str,type);
     }
 
     public static String getBody(HttpServletRequest req) {

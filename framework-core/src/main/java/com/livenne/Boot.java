@@ -19,8 +19,8 @@ public class Boot implements ServletContextListener {
         loader.forEach(provider -> classes.addAll(provider.getClasses()));
         BeanFactory.initialization(classes);
         BeanFactory.dependInjection();
-        ORM.initialization(BeanFactory.entityClassList);
-        ORM.sqlImplement(BeanFactory.entityClassList);
+        ORM.initialization();
+        ORM.automationDDL(BeanFactory.entityClassList);
         RouterFilter.register(sce.getServletContext());
     }
 }

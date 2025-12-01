@@ -35,8 +35,11 @@ public class BeanFactory {
         repositoryClassList = new HashSet<>();
         for (Class<?> component : classes) {
             Object instance;
-            if (component.isInterface()){
-                instance = interfaceImpl(component);
+            if (component.isInterface()) {
+                if (!component.isAnnotationPresent(Repository.class)) {
+                    continue;
+                }
+                instance = ORM.sqlImplement(component);
             }else {
                 instance = component.getConstructor().newInstance();
             }
@@ -75,27 +78,6 @@ public class BeanFactory {
             }
         }
     }
-
-    public static Object interfaceImpl(Class<?> component){
-        return Proxy.newProxyInstance(
-                component.getClassLoader(),
-                new Class[]{component},
-                (proxy, method, args) -> {
-                    Class<?> returnType = method.getReturnType();
-                    if (AnnotationUtils.isAnnotationPresent(component, Repository.class) && method.isAnnotationPresent(SqlExecute.class)) {
-                        String sql = method.getAnnotation(SqlExecute.class).value();
-                        System.out.println(sql);
-                    }
-                    if (returnType.equals(int.class)){
-                        return 0;
-                    }
-                    if (returnType.equals(boolean.class)){
-                        return false;
-                    }
-                    return null;
-                });
-    }
-
 
     public static Object findBean(Class<?> beanClass) {
         for (Object bean : beanList) {

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
@@ -85,13 +86,32 @@ public class RouterFilter implements Filter {
                         String attr = parameter.getAnnotation(Attribute.class).value();
                         arg = req.getAttribute(attr);
                     } else if (parameter.isAnnotationPresent(RequestBody.class) && method.isAnnotationPresent(PostMapping.class)) {
-                        arg = StringUtils.getBody(req);
+                        boolean isMultipart = req.getContentType() != null && req.getContentType().startsWith("multipart/form-data"); //TODO adjustment needed
+                        if (isMultipart) {
+                            ServletInputStream inputStream = req.getInputStream();
+                            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                            byte[] data = new byte[1024];
+                            int nRead;
+                            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                                buffer.write(data, 0, nRead);
+                            }
+                            arg = buffer.toByteArray();
+                        }else {
+                            arg = StringUtils.toObject(StringUtils.getBody(req),type);
+                            System.out.println(type);
+                            System.out.println(arg.getClass().getName());
+                        }
                     }
                     paramList.add(arg);
                 }
-                Object ret = method.invoke(controller, paramList.toArray());
-                PrintWriter out = res.getWriter();
-                out.println(StringUtils.toJson(ret));
+
+                try{
+                    Object ret = method.invoke(controller, paramList.toArray());
+                    PrintWriter out = res.getWriter();
+                    out.println(StringUtils.toJson(ret));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
     }
