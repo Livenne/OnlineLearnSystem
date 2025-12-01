@@ -3,5 +3,5 @@ package com.livenne.repository;
 import com.livenne.annotation.Repository;
 
 @Repository
-public interface CourseItemRepo {
+public interface ChapterRepo {
 }

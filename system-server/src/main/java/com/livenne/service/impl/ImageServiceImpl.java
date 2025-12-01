@@ -17,7 +17,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public String getContentType(String imageName) {
         String fileName = imageName.toLowerCase();
-        String contentType = "";
+        String contentType;
         if (fileName.endsWith(".png")) {
             contentType = "image/png";
         } else if (fileName.endsWith(".jpg") ||

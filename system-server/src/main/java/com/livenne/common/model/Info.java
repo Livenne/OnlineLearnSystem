@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity("course_item")
-public class CourseItem {
+@Entity("info")
+public class Info {
     @Id
-    private Long id;
-    private Long courseId;
+    private Long infoId;
     private String name;
-    private String videoUrl;
+    private String teacher;
+    private Long createTime;
+    private String content;
+    private String coverUrl;
 }
