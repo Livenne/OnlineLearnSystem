@@ -17,9 +17,9 @@ import java.util.Set;
 
 public class TEst {
 
-    @Test
+//    @Test
     public void test() throws IOException {
-        File file = new File("C:\\Users\\21332\\Pictures\\Saved Pictures\\test.png");
+        File file = new File("C:\\Users\\21332\\Downloads\\code-snapshot2.png");
         try {
             upload(file, 1024 * 1024);
         } catch (InterruptedException e) {
@@ -78,7 +78,6 @@ public class TEst {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/file/upload?fileName="+fileName+"&chuckIndex="+chuckIndex))
                 .POST(HttpRequest.BodyPublishers.ofByteArray(chunkData))
-                .header("Content-Type", "multipart/form-data")
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

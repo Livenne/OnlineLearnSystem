@@ -1,3 +1,4 @@
+import com.sun.source.tree.BreakTree;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -11,8 +12,50 @@ public class ORMTest {
 
     @Test
     public void t2(){
-        String test = "{abcde}";
-        System.out.println(test.substring(1, test.length() - 1));
+        System.out.println(int.class.equals(Integer.class));
+        System.out.println(Integer.class.equals(int.class));
+    }
+
+    @Test
+    public void t3() {
+        isPrimitive(String.class);
+        isPrimitive(String[].class);
+        isPrimitive(Long.class);
+        isPrimitive(Double.class);
+        isPrimitive(Float.class);
+        isPrimitive(Integer.class);
+        isPrimitive(Short.class);
+        isPrimitive(Byte.class);
+        isPrimitive(Character.class);
+        isPrimitive(Boolean.class);
+        isPrimitive(Void.class);
+        isPrimitive(long.class);
+        isPrimitive(double.class);
+        isPrimitive(float.class);
+        isPrimitive(int.class);
+        isPrimitive(short.class);
+        isPrimitive(byte.class);
+        isPrimitive(char.class);
+        isPrimitive(boolean.class);
+        isPrimitive(void.class);
+    }
+
+    private void isPrimitive(Class<?> clazz) {
+        System.out.println(clazz.getSimpleName() + ": " + isBasicType(clazz));
+    }
+
+    public static boolean isBasicType(Class<?> clazz) {
+        return  clazz.isPrimitive()||
+                clazz == Integer.class ||
+                clazz == Long.class ||
+                clazz == Double.class ||
+                clazz == Float.class ||
+                clazz == Boolean.class ||
+                clazz == Character.class ||
+                clazz == Byte.class ||
+                clazz == Short.class ||
+                clazz == String.class ||
+                clazz == Void.class;
     }
 
     @Test

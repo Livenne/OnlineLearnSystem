@@ -2,6 +2,8 @@ package com.livenne.controller;
 
 import com.livenne.ResponseEntity;
 import com.livenne.annotation.*;
+import com.livenne.common.model.User;
+import com.livenne.repository.UserRepo;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,6 +14,29 @@ import java.util.*;
 @Controller("/file")
 public class TestController {
 
+    @Autowired
+    private UserRepo userRepo;
+
+    @GetMapping("/t1")
+    public ResponseEntity<?> test(){
+        User user = userRepo.getUser(1L);
+        System.out.println(user);
+        return ResponseEntity.success(user);
+    }
+    @GetMapping("/t2")
+    public ResponseEntity<?> test2(){
+        List<User> user = userRepo.getUserList();
+        System.out.println(user);
+        return ResponseEntity.success(user);
+    }
+
+    @GetMapping("/t3")
+    public ResponseEntity<?> test3(){
+        String username = userRepo.getUsername(2L);
+        System.out.println(username);
+        return ResponseEntity.success(username);
+    }
+
     public static Map<Object, Set<Integer>> redisVirtual = new HashMap<>();
 
     public final String FILE_PATH = "E:\\Code\\Java\\OnlineLearnSystem\\system-server\\src\\main\\resources\\file\\";
@@ -19,7 +44,7 @@ public class TestController {
     @PostMapping("/upload")
     public ResponseEntity<?> upload(@RequestBody byte[] fileData,
                                     @RequestParm("fileName") String fileName,
-                                    @RequestParm("chuckIndex") String chuckIndex) { // 修改点1：直接接收字节数组和参数
+                                    @RequestParm("chuckIndex") String chuckIndex) {
         System.out.println("Upload File:" + fileName + "|" + chuckIndex + "| Data size: " + (fileData != null ? fileData.length : 0));
 
         File chuckDir = new File(FILE_PATH + fileName + "_chucks");

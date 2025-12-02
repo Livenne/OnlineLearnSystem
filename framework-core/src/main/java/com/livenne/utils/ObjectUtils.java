@@ -21,4 +21,18 @@ public class ObjectUtils {
         if (type.equals(Character.class)) return 0;
         return null;
     }
+
+    public static boolean isBasicType(Class<?> clazz) {
+        return  clazz.isPrimitive()||
+                clazz == Integer.class ||
+                clazz == Long.class ||
+                clazz == Double.class ||
+                clazz == Float.class ||
+                clazz == Boolean.class ||
+                clazz == Character.class ||
+                clazz == Byte.class ||
+                clazz == Short.class ||
+                clazz == String.class ||
+                clazz == Void.class;
+    }
 }

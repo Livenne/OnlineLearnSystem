@@ -1,5 +1,7 @@
 package com.livenne.common.model;
 
+import com.livenne.IdType;
+import com.livenne.annotation.ColumnType;
 import com.livenne.annotation.Entity;
 import com.livenne.annotation.Id;
 import lombok.AllArgsConstructor;

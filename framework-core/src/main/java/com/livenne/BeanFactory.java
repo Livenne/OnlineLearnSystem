@@ -34,14 +34,19 @@ public class BeanFactory {
         repositoryBeanList = new HashSet<>();
         repositoryClassList = new HashSet<>();
         for (Class<?> component : classes) {
-            Object instance;
+            Object instance = null;
             if (component.isInterface()) {
                 if (!component.isAnnotationPresent(Repository.class)) {
                     continue;
                 }
                 instance = ORM.sqlImplement(component);
             }else {
-                instance = component.getConstructor().newInstance();
+                try {
+
+                    instance = component.getConstructor().newInstance();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
             beanList.add(instance);
             beanClassList.add(component);
