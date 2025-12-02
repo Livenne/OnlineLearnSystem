@@ -1,7 +1,6 @@
 package com.livenne.service;
 
 import com.livenne.common.model.Course;
-import com.livenne.common.model.CourseItem;
 
 import java.util.List;
 

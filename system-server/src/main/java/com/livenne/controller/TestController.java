@@ -4,18 +4,36 @@ import com.livenne.ResponseEntity;
 import com.livenne.annotation.*;
 import com.livenne.common.model.User;
 import com.livenne.repository.UserRepo;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
+@Slf4j
 @Controller("/file")
 public class TestController {
 
     @Autowired
     private UserRepo userRepo;
+
+    @GetMapping("/t")
+    public ResponseEntity<?> te() throws SQLException {
+        RuntimeException runtimeException = new RuntimeException();
+        log.info(runtimeException.getMessage());
+        log.debug(runtimeException.getMessage());
+        log.error(runtimeException.getMessage());
+        log.trace(runtimeException.getMessage());
+        log.warn(runtimeException.getMessage());
+        ResultSet resultSet = null;
+        resultSet.next();
+        System.out.println(1/0);
+        return ResponseEntity.success();
+    }
 
     @GetMapping("/t1")
     public ResponseEntity<?> test(){

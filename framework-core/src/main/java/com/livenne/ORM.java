@@ -4,21 +4,19 @@ package com.livenne;
 import com.livenne.annotation.*;
 import com.livenne.utils.*;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
-import javax.sql.rowset.CachedRowSet;
-import javax.sql.rowset.RowSetProvider;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
+@Slf4j
 public class ORM {
 
     private static final String URL = "jdbc:mysql://localhost:3306/dev";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
     private static final Integer BASE_CONNECTION_POOL_SIZE = 5;
@@ -27,7 +25,7 @@ public class ORM {
 
     @SneakyThrows
     public static void initialization() {
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        Class.forName(DRIVER);
         connectionPool = new LinkedList<>();
         for (int i = 0; i < BASE_CONNECTION_POOL_SIZE; i++) {
             connectionPool.add(DriverManager.getConnection(URL, USERNAME, PASSWORD));
@@ -40,7 +38,7 @@ public class ORM {
         try {
             result = operation.apply(connection);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         returnConnection(connection);
         return result;
@@ -89,7 +87,6 @@ public class ORM {
                                         SQLUtils.typeMatch(field.getType()))
                                 .add(";");
                         sqlExecutor(conn->{
-                            System.out.println(alterColumnSql.toString());
                             PreparedStatement preparedStatement = conn.prepareStatement(alterColumnSql.toString());
                             preparedStatement.execute();
                             return null;
@@ -109,7 +106,6 @@ public class ORM {
                     createTableSql.add(columnJoiner.toString());
                 }
                 sqlExecutor(conn->{
-                    System.out.println(createTableSql.toString());
                     PreparedStatement statement = conn.prepareStatement(createTableSql.toString());
                     statement.execute();
                     return null;

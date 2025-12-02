@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
+@Slf4j
 public class StringUtils{
     public static ObjectMapper mapper = new ObjectMapper();
 
@@ -87,7 +89,7 @@ public class StringUtils{
         try {
             return mapper.writeValueAsString(obj);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn(e.getMessage());
             return null;
         }
     }
