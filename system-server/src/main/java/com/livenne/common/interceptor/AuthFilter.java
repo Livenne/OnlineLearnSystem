@@ -10,10 +10,18 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @WebFilter("/*")
 public class AuthFilter implements Filter {
+
+    private final Set<String> whiteList = Set.of(
+            "/auth",
+            "/image"
+    );
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
@@ -24,7 +32,7 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        if (uri.startsWith("/auth")){
+        if (whiteList.stream().anyMatch(uri::startsWith)){
             chain.doFilter(request, response);
             return;
         }

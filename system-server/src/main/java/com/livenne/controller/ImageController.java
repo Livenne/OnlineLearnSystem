@@ -2,11 +2,12 @@ package com.livenne.controller;
 
 import com.livenne.annotation.*;
 import com.livenne.service.ImageService;
-import com.livenne.service.impl.ImageServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 
+@Slf4j
 @Controller("/image")
 public class ImageController{
 
@@ -19,10 +20,19 @@ public class ImageController{
     public void download(@PathVariable("imageName") String imageName) {
         if (!imageService.has(imageName)) return;
         File image = imageService.get(imageName);
-        response.setContentType(imageService.getContentType(imageName));
-        try (FileInputStream fis = new FileInputStream(image)) {
-            response.setContentLength((int) image.length());
-            OutputStream out = response.getOutputStream();
+        long fileLength = image.length();
+        response.setContentLengthLong(fileLength);
+//        response.setHeader("Cache-Control", "public, max-age=300");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "*");
+        response.setHeader("Content-Type", imageService.getContentType(imageName));
+        System.out.println(imageService.getContentType(imageName));
+        System.out.println(response.getContentType());
+
+        try (FileInputStream fis = new FileInputStream(image);
+             OutputStream out = response.getOutputStream()) {
+
             byte[] buffer = new byte[4096];
             int bytesRead;
             while ((bytesRead = fis.read(buffer)) != -1) {
@@ -30,7 +40,7 @@ public class ImageController{
             }
             out.flush();
         } catch (IOException e) {
-            throw new RuntimeException("Failed to stream image data", e);
+            log.error("Error streaming image", e);
         }
     }
 }

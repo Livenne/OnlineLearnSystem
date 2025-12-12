@@ -5,6 +5,8 @@ import com.livenne.common.constant.FileConstant;
 import com.livenne.service.ImageService;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -16,19 +18,16 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public String getContentType(String imageName) {
-        String fileName = imageName.toLowerCase();
-        String contentType;
-        if (fileName.endsWith(".png")) {
-            contentType = "image/png";
-        } else if (fileName.endsWith(".jpg") ||
-                fileName.endsWith(".jpeg")) {
-            contentType = "image/jpeg";
-        } else if (fileName.endsWith(".gif")) {
-            contentType = "image/gif";
-        } else {
-            contentType = "application/octet-stream";
+        if (imageName.toLowerCase().endsWith(".jpg") || imageName.toLowerCase().endsWith(".jpeg")) {
+            return "image/jpeg";
+        } else if (imageName.toLowerCase().endsWith(".png")) {
+            return "image/png";
+        } else if (imageName.toLowerCase().endsWith(".gif")) {
+            return "image/gif";
+        } else if (imageName.toLowerCase().endsWith(".webp")) {
+            return "image/webp";
         }
-        return contentType;
+        return "image/jpeg";
     }
 
     @Override

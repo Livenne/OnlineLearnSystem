@@ -33,16 +33,10 @@ public class StringUtils{
         }
     }
 
-    public static <T> T formJson(String json,TypeReference<T> typeReference) {
-        try {
-            return mapper.readValue(json, typeReference);
-        } catch (Exception e) {
-            log.warn(e.getMessage(),e.getCause());
-            return null;
-        }
-    }
-
     public static <T> T formJson(String json,Class<T> clazz) {
+        if (clazz.equals(String.class)){
+            return (T) json;
+        }
         try {
             return mapper.readValue(json, clazz);
         } catch (Exception e) {
