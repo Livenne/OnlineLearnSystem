@@ -1,5 +1,6 @@
 package com.livenne;
 
+import com.mysql.cj.log.Slf4JLogger;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
@@ -7,6 +8,7 @@ import jakarta.servlet.annotation.WebListener;
 import java.util.HashSet;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.logging.LogManager;
 
 @WebListener
 public class Boot implements ServletContextListener {

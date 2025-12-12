@@ -1,19 +1,38 @@
-import com.sun.source.tree.BreakTree;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.livenne.BaseMapper;
+import com.livenne.utils.ObjectUtils;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.sql.*;
+import java.lang.reflect.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ORMTest {
 
+    interface BaseMpr<T>{
+
+    }
+
+    class TTTT{}
+
+    interface Tess extends BaseMpr<TTTT>{
+
+    }
+
     @Test
-    public void t2(){
-        System.out.println(int.class.equals(Integer.class));
-        System.out.println(Integer.class.equals(int.class));
+    public void strObj() throws JsonProcessingException {
+        String str = "Bearer asdfasdfas";
+        System.out.println(str.substring("Bearer ".length()));
+    }
+
+    @Test
+    public void t2() {
+        System.out.println(true);
+        System.out.println(Integer.class.isAssignableFrom(int.class));
     }
 
     @Test
@@ -45,7 +64,7 @@ public class ORMTest {
     }
 
     public static boolean isBasicType(Class<?> clazz) {
-        return  clazz.isPrimitive()||
+        return clazz.isPrimitive() ||
                 clazz == Integer.class ||
                 clazz == Long.class ||
                 clazz == Double.class ||
@@ -95,20 +114,20 @@ public class ORMTest {
         return null;
     }
 
-    public Object toObj(ResultSet rs,Class<?> type) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public Object toObj(ResultSet rs, Class<?> type) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         List<Object> list = new ArrayList<>();
-        if (type.isPrimitive()){
+        if (type.isPrimitive()) {
             return rs.getObject(1);
         }
 
         Method method;
 
-        while (rs.next()){
+        while (rs.next()) {
             Object obj = type.getConstructor().newInstance();
             Field[] fields = type.getDeclaredFields();
             for (Field field : fields) {
                 field.setAccessible(true);
-                field.set(obj,rs.getObject(field.getName()));
+                field.set(obj, rs.getObject(field.getName()));
             }
             list.add(obj);
         }

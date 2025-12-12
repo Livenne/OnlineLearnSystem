@@ -44,7 +44,7 @@ public class BeanFactory {
                 if (!component.isAnnotationPresent(Repository.class)) {
                     continue;
                 }
-                instance = ORM.sqlImplement(component);
+                instance = ORM.repositoryImpl(component);
             }else {
                 instance = component.getConstructor().newInstance();
             }
@@ -75,6 +75,9 @@ public class BeanFactory {
 
     @SneakyThrows
     public static void dependInjection() {
+
+        //TODO Loop depend
+
         for (Object bean : beanList) {
             Class<?> component = bean.getClass();
             for (Field field : component.getDeclaredFields()) {

@@ -10,9 +10,7 @@ public class AnnotationUtils {
         for (Annotation annotation : clazz.getAnnotations()) {
             Class<? extends Annotation> annotationType = annotation.annotationType();
             if (!annotationType.getName().startsWith("java.lang.annotation")) {
-                if (isAnnotationPresent(annotationType, targetAnnotation)) {
-                    return true;
-                }
+                return isAnnotationPresent(annotationType, targetAnnotation);
             }
         }
         return false;

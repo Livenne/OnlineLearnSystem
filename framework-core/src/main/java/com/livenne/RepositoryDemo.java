@@ -1,17 +1,22 @@
 package com.livenne;
 
-import com.livenne.annotation.SqlExecute;
+import com.livenne.annotation.*;
 
 import java.util.List;
 
-public interface RepositoryDemo{
+public interface RepositoryDemo extends BaseMapper<Long>{
 
-    @SqlExecute("select username from User where userId = ?")
     String getUsername(Long userId);
 
-    @SqlExecute("select * from User")
+//    @Insert
+//    Long insert(User user);
+
+    @Query
     List<?> getUserList();
 
-    @SqlExecute("delete from User where userId = ?")
+    @Delete
     void deleteUser(Long userId);
+
+//    @Update
+//    void update(User user, @Cond("userId") Long userId);
 }

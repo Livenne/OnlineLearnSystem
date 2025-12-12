@@ -83,15 +83,15 @@ public class RouterFilter implements Filter {
                 Class<?> type = parameter.getType();
                 if (parameter.isAnnotationPresent(PathVariable.class)){
                     String path = parameter.getAnnotation(PathVariable.class).value();
-                    arg = StringUtils.toObject(pathVarMap.get(path), type);
+                    arg = StringUtils.formJson(pathVarMap.get(path), type);
                 }else if (parameter.isAnnotationPresent(RequestParm.class)){
                     String parm =  parameter.getAnnotation(RequestParm.class).value();
-                    arg = StringUtils.toObject(req.getParameter(parm),type);
+                    arg = StringUtils.formJson(req.getParameter(parm),type);
                 } else if (parameter.isAnnotationPresent(Attribute.class)) {
                     String attr = parameter.getAnnotation(Attribute.class).value();
                     arg = req.getAttribute(attr);
                 } else if (parameter.isAnnotationPresent(RequestBody.class) && method.isAnnotationPresent(PostMapping.class)) {
-                    arg = StringUtils.toObject(StringUtils.getBody(req),type);
+                    arg = StringUtils.formJson(StringUtils.getBody(req),type);
                 }
                 paramList.add(arg);
             }

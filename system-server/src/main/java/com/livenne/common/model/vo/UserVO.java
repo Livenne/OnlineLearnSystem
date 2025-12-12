@@ -1,7 +1,7 @@
 package com.livenne.common.model.vo;
 
 
-import com.livenne.common.model.User;
+import com.livenne.common.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

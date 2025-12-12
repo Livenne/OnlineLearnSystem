@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> exceptionHandler(Exception e) {
-        System.out.println("Catch Exception");
-        System.out.println(e);
-        e.printStackTrace();
-        log.error(e.getMessage());
+        log.error(e.getMessage(),e.getCause());
         return ResponseEntity.failure(e.getMessage());
     }
 }
