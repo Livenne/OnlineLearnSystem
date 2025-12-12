@@ -71,7 +71,7 @@ public class ShopController {
         return ResponseEntity.success(userService.leaveCart(new UserShoppingCartDTO(userId, courseId)));
     }
 
-    @GetMapping("/cart/list}")
+    @GetMapping("/cart/list")
     public ResponseEntity<List<CourseVO>> getCart(@Attribute("userId") Long userId){
         return ResponseEntity.success(userService.getShoppingCart(userId)
                 .stream()

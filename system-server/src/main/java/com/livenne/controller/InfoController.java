@@ -4,16 +4,19 @@ import com.livenne.ResponseEntity;
 import com.livenne.annotation.*;
 import com.livenne.common.model.vo.InfoVO;
 import com.livenne.service.InfoService;
+import com.livenne.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+@Slf4j
 @Controller("/info")
 public class InfoController {
 
     @Autowired
     private InfoService infoService;
 
-    @GetMapping("/{infoId}")
+    @GetMapping("/get/{infoId}")
     public ResponseEntity<InfoVO> getInfo(@PathVariable("infoId") Long infoId){
         if (!infoService.isExistById(infoId)) {
             return ResponseEntity.failureMsg("资讯: %d 不存在", infoId);

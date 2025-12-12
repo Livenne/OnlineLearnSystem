@@ -25,8 +25,13 @@ public class ORMTest {
 
     @Test
     public void strObj() throws JsonProcessingException {
-        String str = "Bearer asdfasdfas";
-        System.out.println(str.substring("Bearer ".length()));
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> list = new ArrayList<>();
+        list.add("test");
+        list.add("testa");
+        list.add("testb");
+        list.add("testd");
+        System.out.println(mapper.writeValueAsString(list));
     }
 
     @Test

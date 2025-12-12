@@ -19,7 +19,7 @@ public class CourseController{
     @Autowired
     private CourseService courseService;
 
-    @GetMapping("/{courseId}")
+    @GetMapping("/get/{courseId}")
     public ResponseEntity<CourseVO> getCourse(@PathVariable("courseId") Long courseId,@Attribute("userId") Long userId){
         if (!courseService.isExistById(courseId)){
             return ResponseEntity.failureMsg("课程: %d 不存在", courseId);

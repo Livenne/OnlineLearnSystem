@@ -20,7 +20,7 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping("/{questionId}")
+    @GetMapping("/get/{questionId}")
     public ResponseEntity<QuestionVO> getQuestion(@PathVariable("questionId") Long questionId,@Attribute("userId") Long userId){
         if (!questionService.isExistById(questionId)){
             return ResponseEntity.failureMsg("问题: %d 不存在", questionId);
